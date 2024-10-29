@@ -455,3 +455,159 @@ public class Main {
 
         
     }
+
+Q7.Equilibrium index of an array
+
+Problem Description
+You are given an array A of integers of size N.
+Your task is to find the equilibrium index of the given array
+The equilibrium index of an array is an index such that the sum of elements at lower indexes is equal to the sum of elements at higher indexes.
+If there are no elements that are at lower indexes or at higher indexes, then the corresponding sum of elements is considered as 0.
+
+Note:
+Array indexing starts from 0.
+If there is no equilibrium index then return -1.
+If there are more than one equilibrium indexes then return the minimum index.
+
+Problem Constraints
+
+1 <= N <= 105
+-105 <= A[i] <= 105
+
+Input Format
+First arugment is an array A .
+Output Format
+Return the equilibrium index of the given array. If no such index is found then return -1.
+
+Example Input
+
+Input 1:
+A = [-7, 1, 5, 2, -4, 3, 0]
+Input 2:
+A = [1, 2, 3]
+
+
+Example Output
+Output 1:
+3
+Output 2:
+-1
+
+public class Solution {
+    public int solve(int[] A) {
+        int[] pf = new int[A.length];
+        pf[0]=A[0];
+        for(int i=1;i<A.length;i++){
+            pf[i] = pf[i-1]+A[i];
+        }
+        int L=0;
+        int R=0;
+        for(int i=0;i<A.length;i++){
+            if(i==0){
+                L=0;
+            }
+            else{
+                L=pf[i-1];
+            }
+            if(i==A.length-1){
+                R=0;
+            }
+            else{
+                R=pf[A.length-1]-pf[i];
+            }
+            if(R==L){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+Q8.Special Index
+
+Problem Description
+Given an array, arr[] of size N, the task is to find the count of array indices such that removing an element from these indices makes the sum of even-indexed and odd-indexed array elements equal.
+
+Problem Constraints
+
+1 <= N <= 105
+-105 <= A[i] <= 105
+Sum of all elements of A <= 109
+
+Input Format
+First argument contains an array A of integers of size N
+Output Format
+Return the count of array indices such that removing an element from these indices makes the sum of even-indexed and odd-indexed array elements equal.
+Example Input
+
+Input 1:
+A = [2, 1, 6, 4]
+Input 2:
+A = [1, 1, 1]
+
+Example Output
+Output 1:
+1
+Output 2:
+3
+
+public class Solution {
+    public int solve(int[] A) {
+        int N =A.length;
+        int[] Po = Prefixodd(A, N);
+        int[] Pe=  Prefixeven(A,N);
+        int Sodd,Seven;
+        int count=0;
+        for (int i = 0; i < N ; i++) {
+            if(i == 0)
+            {
+                Sodd=Pe[N-1]-Pe[i];
+                Seven=Po[N-1]-Po[i];
+                if(Sodd==Seven)
+                {
+                    count++;
+                }
+            }
+            else
+            {
+                Sodd=Po[i-1]+Pe[N-1]-Pe[i];
+                Seven=Pe[i-1]+Po[N-1]-Po[i];
+                if(Sodd==Seven)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+        
+
+        int[] Prefixeven(int[]B,int n) {
+         int[] Pe = new int[n];
+         Pe[0]=B[0];
+         for (int i = 1; i < n; i++) {
+             if (i % 2 == 0)
+             {
+                 Pe[i] = Pe[i - 1] + B[i];
+             }
+             else
+             {
+                 Pe[i]=Pe[i-1];
+             }
+         }
+         return Pe;
+    }
+
+     int[] Prefixodd(int[]B,int n) {
+        int[] Po = new int[n];
+        Po[0]=0;
+        for (int i = 1; i < n; i++) {
+            if (i % 2 == 1) {
+                Po[i] = Po[i - 1] + B[i];
+            } else {
+                Po[i] = Po[i - 1];
+            }
+        }
+        return Po;
+    }
+    }
